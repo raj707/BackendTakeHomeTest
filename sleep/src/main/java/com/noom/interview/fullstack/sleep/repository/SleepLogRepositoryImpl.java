@@ -2,7 +2,7 @@ package com.noom.interview.fullstack.sleep.repository;
 
 import com.noom.interview.fullstack.sleep.entity.Feeling;
 import com.noom.interview.fullstack.sleep.entity.SleepLog;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -53,10 +53,17 @@ public class SleepLogRepositoryImpl implements SleepLogRepository {
                 )
                 """;
 
-        jdbcTemplate.update(
-                sql,
-                new BeanPropertySqlParameterSource(sleepLog)
-        );
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", sleepLog.getId())
+                .addValue("userId", sleepLog.getUserId())
+                .addValue("sleepDate", sleepLog.getSleepDate())
+                .addValue("bedtime", sleepLog.getBedtime())
+                .addValue("wakeupTime", sleepLog.getWakeupTime())
+                .addValue("totalMinutesInBed", sleepLog.getTotalMinutesInBed())
+                .addValue("feeling", sleepLog.getFeeling().name())
+                .addValue("createdAt", sleepLog.getCreatedAt());
+
+        jdbcTemplate.update(sql, params);
 
         return sleepLog;
     }
