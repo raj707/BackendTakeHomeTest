@@ -52,8 +52,8 @@ public class SleepLogServiceImpl implements SleepLogService {
 
 
         SleepLog sleepLog = new SleepLog(
-                UUID.randomUUID(),
                 userId,
+                UUID.randomUUID(),
                 LocalDate.now(),
                 request.bedtime(),
                 request.wakeupTime(),
